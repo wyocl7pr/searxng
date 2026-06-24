@@ -1,14 +1,12 @@
 use_default_settings: true
 
+server:
+  secret_key: "a3f9c2e8b771d46a99f2c8e6a105d4c7e8b12a4f3c69d5e2f891c0a7b3d4e56f"  # 自己 openssl rand -hex 32 生成一个
+
 search:
   formats:
     - html
     - json
-
-server:
-  port: 8080
-  bind_address: "0.0.0.0"
-  limiter: false
 
 redis:
   url: false
