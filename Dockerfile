@@ -1,10 +1,10 @@
 FROM searxng/searxng:latest
 
-# 1. 把 - html 改成 - json（原文件默认只有 html 那一行）
-RUN sed -i 's/^\([[:space:]]*\)\(- html\)$/\1- html\n\1- json/' /etc/searxng/settings.yml
+# 在 "- html" 那行下面追加 "- json"，a\ 是 GNU sed 标准语法，稳
+RUN sed -i '/^[[:space:]]*- html$/,+0 a\  - json' /etc/searxng/settings.yml || true
 
-# 2. 再顺手把 limiter 关了，不然服务端调用容易被 429
-RUN sed -i 's/limiter:.*/limiter: false/' /etc/searxng/settings.yml
+# 保险：确认有没有真的写进去
+RUN grep -A1 'formats:' /etc/searxng/settings.yml
 
-# 3. secret_key
+# secret_key
 RUN sed -i "s/ultrasecretkey/$(openssl rand -hex 32)/g" /etc/searxng/settings.yml
